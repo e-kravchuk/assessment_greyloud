@@ -7,6 +7,12 @@ class GeoHelper
         if (empty($A)) {
             return 'Error: empty massive';
         }
+        
+        $countEl = count($A);
+        
+        if (count($countEl) > 100000) {
+            return 'Error: max count of elements 100000';
+        }
 
         foreach ($A as $key => $value) {
             if (!is_integer($value)) return "Error: not integer element with key $key";
@@ -14,8 +20,6 @@ class GeoHelper
         }
 
         $result = 0;
-
-        $countEl = count($A);
 
         for ($i = 0; $i < $countEl; $i++) {
             $startPoint = 0;
