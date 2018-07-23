@@ -26,14 +26,6 @@ class GeoHelper
             } 
             else break; 
         }
-        
-        for ($m = 0; $m < $countEl; $m++) {  //Обрезаем начало массива, который не может содержать воды 
-            if ($A[$m] <= $A[$m + 1]) { 
-                unset($A[$m]);
-                $countEl--;
-            }
-            else break;
-        }
 
         $result = 0;
         $startPoint = $A[0];
@@ -48,30 +40,30 @@ class GeoHelper
             
             $currentVal = $A[$i];
 
-            if ($A[$i] < $startPoint) { // идём на уменьшение ищем минимум
+            if ($A[$i] =< $startPoint) { // идём на уменьшение ищем минимум
                 if($startPoint - $currentVal > $startPoint - $minimum) {
                     $minimum = $currentVal;
                     $minimumKey = $i;
                 }
             }
 
-            elseif ($i+1 == $countEl) { // последний элемент
-                
-                
+            else { // идём на увеличение
                 $endPoint  = $currentVal;
                 $endKey = $i; 
+
             }
 
-            else { // идём на увеличение 
-                $endPoint  = $currentVal;
+
+
+            if ($endPoint > $startPoint) { // отслеживаем пересечение
+                $endPoint = $startPoint;
                 $endKey = $i;
+            }
+            elseif() { // отслеживаем минимумы
 
-
-                
-                $startPoint = $currentVal;
-                $startKey = $i;
             }
 
+            
 
             /*
             if ($i + 1 < $countEl && $A[$i] > $A[$i+1]) {
