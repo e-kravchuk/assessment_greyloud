@@ -10,6 +10,7 @@ class GeoHelper
 
         foreach ($A as $key => $value) {
             if (!is_integer($value)) return "Error: not integer element with key $key";
+            if (0 > $value || $value > 100000000) return "Error: element with key $key out of range 1 - 100000000";
         }
 
         $result = 0;
