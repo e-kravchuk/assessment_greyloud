@@ -14,7 +14,7 @@ class GeoHelper
 
         $result = 0;
 
-        for ($m = count($A) - 1; $m >= 0; $m--) {
+        for ($m = count($A) - 1; $m >= 0; $m--) {  //Обрезаем конец массива, который не может содержать воды
             if ($A[$m] <= $A[$m - 1]) {
                 unset($A[$m]);
             }
@@ -32,17 +32,18 @@ class GeoHelper
                 $startPoint = $A[$i];
 
                 while ($i + $k + 1 < $countEl && $A[$i + $k] < $startPoint ) {
+                    //Если точка максимальная на оставшемся учаске, то используем её
                     if ($A[$i + $k] == max(array_slice($A, $i + $k, $countEl - 1))) break;
                     $k++;
                 }
 
                 $endPoint = $A[$i + $k];
 
-                $heigth = min($startPoint, $endPoint);
+                $heigth = min($startPoint, $endPoint); // Получаем верхнюю точку для рассчета шлубины
 
                 $masOfPoints = array_slice($A, $i,  $k + 1);
 
-                if (count($masOfPoints) > 2)
+                if (count($masOfPoints) > 2) // Двух элементов недостаточно
                 {
                     $minimum = min($masOfPoints);
 
@@ -51,7 +52,7 @@ class GeoHelper
                     if ($diff > $result)
                     {
                         $result = $diff;
-                        $i += $k - 1;
+                        $i += $k - 1; //смещаем итератор на величину просчитанного участка
                     }
                 }
             }
