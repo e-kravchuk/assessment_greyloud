@@ -36,22 +36,42 @@ class GeoHelper
         }
 
         $result = 0;
-        $startPoint = $A[$i];
-        $endPoint = 0;
+        $startPoint = $A[0];
+        $startKey = 0;
+        $endPoint = $A[0];
+        $endKey = 0;
         $heigth = 0;
-        $minimum = 0;
+        $minimum = $A[0];
+        $minimumKey = 0;
 
         for ($i = 0; $i < $countEl; $i++) {
             
-            
-            
-            if ($A[$i] > $startPoint) {
-                $endPoint = $A[$i];
-                
-                
-                
-                $startPoint = $A[$i];
+            $currentVal = $A[$i];
+
+            if ($A[$i] < $startPoint) { // идём на уменьшение ищем минимум
+                if($startPoint - $currentVal > $startPoint - $minimum) {
+                    $minimum = $currentVal;
+                    $minimumKey = $i;
+                }
             }
+
+            elseif ($i+1 == $countEl) { // последний элемент
+                
+                
+                $endPoint  = $currentVal;
+                $endKey = $i; 
+            }
+
+            else { // идём на увеличение 
+                $endPoint  = $currentVal;
+                $endKey = $i;
+
+
+                
+                $startPoint = $currentVal;
+                $startKey = $i;
+            }
+
 
             /*
             if ($i + 1 < $countEl && $A[$i] > $A[$i+1]) {
