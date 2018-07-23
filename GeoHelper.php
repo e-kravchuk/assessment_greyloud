@@ -18,29 +18,68 @@ class GeoHelper
             if (!is_integer($value)) return "Error: not integer element with key $key";
             if (0 > $value || $value > 100000000) return "Error: element with key $key out of range 1 - 100000000";
         }
-        
-        for ($m = $countEl - 1; $m >= 0; $m--) {  //Обрезаем конец массива, который не может содержать воды 
-            if ($A[$m] <= $A[$m - 1]) { 
+
+        for ($m = $countEl - 1; $m >= 0; $m--) {  //Обрезаем конец массива, который не может содержать воды
+            if ($A[$m] <= $A[$m - 1]) {
                 unset($A[$m]);
                 $countEl--;
-            } 
-            else break; 
+            }
+            else break;
         }
+        
+        /*for ($m = 1; $m < $countEl; $m++) {  //Обрезаем начало массива, которое не может содержать воды
+            if ($A[$m] >= $A[$m - 1]) {
+                unset($A[$m]);
+                $countEl--;
+            }
+            else break; 
+        }*/
 
         $result = 0;
         $startPoint = $A[0];
-        $startKey = 0;
+        //$startKey = 0;
         $endPoint = $A[0];
-        $endKey = 0;
+        //$endKey = 0;
         $heigth = 0;
         $minimum = $A[0];
-        $minimumKey = 0;
+        //$minimumKey = 0;
 
-        for ($i = 0; $i < $countEl; $i++) {
+        for ($i = 1; $i < $countEl; $i++) {
             
             $currentVal = $A[$i];
+            $prevVal = $A[$i - 1];
 
-            if ($A[$i] =< $startPoint) { // идём на уменьшение ищем минимум
+            if ($currentVal >= $prevVal) { // вверх
+                // если перевалили за границу текущей стратовой точки, то назначаем конечную
+                if ($currentVal >= $startPoint) {
+                    $endPoint = $currentVal;
+                }
+                else {
+
+                }
+            }
+            else { // вниз
+                //Если точка максимальная на оставшемся учаске, то используем её
+                if ($prevVal >= max(array_slice($A, $i-1, $countEl - 1))) {
+                    $startPoint = $currentVal;
+                }
+                else {
+
+                }
+            }
+
+            if($startPoint - $currentVal > $startPoint - $minimum) {
+                $minimum = $currentVal;
+            }
+
+            $heigth = min($startPoint, $endPoint); // Получаем верхнюю точку для рассчета глубины
+
+            $diff = $heigth - $minimum;
+
+            if ($diff > $result) $result = $diff;
+
+
+            /*if ($A[$i] <= $startPoint) { // идём на уменьшение ищем минимум
                 if($startPoint - $currentVal > $startPoint - $minimum) {
                     $minimum = $currentVal;
                     $minimumKey = $i;
@@ -61,7 +100,7 @@ class GeoHelper
             }
             elseif() { // отслеживаем минимумы
 
-            }
+            }*/
 
             
 
