@@ -32,16 +32,21 @@ class GeoHelper
         $endPoint = $A[0];
         $heigth = 0;
         $minimum = $A[0];
+        $maximum = $A[0];
+        $prevMaximum = $A[0];
 
         for ($i = 1; $i < $countEl; $i++) {
             
             $currentVal = $A[$i];
-            $prevVal = $A[$i - 1];
             
             $endPoint = $currentVal;
 
             if($startPoint - $currentVal > $startPoint - $minimum) {
                 $minimum = $currentVal;
+            }
+            
+            if($startPoint >= $currentVal && $prevMaximum > $maximum) {
+                $maximum = $currentVal;
             }
 
             $heigth = min($startPoint, $endPoint); // Получаем верхнюю точку для рассчета глубины
@@ -52,10 +57,12 @@ class GeoHelper
             
             // если перевалили за границу текущей стратовой точки, то назначаем конечную
             // или если точка максимальная на оставшемся учаске, то используем её
-            if ($currentVal >= $startPoint || $currentVal >= max(array_slice($A, $i-1, $countEl - 1))) {
+            if ($currentVal >= $startPoint || $currentVal >= $maximum) {
                 $startPoint = $currentVal;
                 $endPoint = $currentVal;
                 $minimum = $currentVal;
+                $prevMaximum = $maximum;
+                $maximum = $currentVal;
             }
         }
 
