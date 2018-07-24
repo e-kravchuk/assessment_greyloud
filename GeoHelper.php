@@ -26,47 +26,19 @@ class GeoHelper
             }
             else break;
         }
-        
-        /*for ($m = 1; $m < $countEl; $m++) {  //Обрезаем начало массива, которое не может содержать воды
-            if ($A[$m] >= $A[$m - 1]) {
-                unset($A[$m]);
-                $countEl--;
-            }
-            else break; 
-        }*/
 
         $result = 0;
         $startPoint = $A[0];
-        //$startKey = 0;
         $endPoint = $A[0];
-        //$endKey = 0;
         $heigth = 0;
         $minimum = $A[0];
-        //$minimumKey = 0;
 
         for ($i = 1; $i < $countEl; $i++) {
             
             $currentVal = $A[$i];
             $prevVal = $A[$i - 1];
-
-            if ($currentVal >= $prevVal) { // вверх
-                // если перевалили за границу текущей стратовой точки, то назначаем конечную
-                if ($currentVal >= $startPoint) {
-                    $endPoint = $currentVal;
-                }
-                else {
-
-                }
-            }
-            else { // вниз
-                //Если точка максимальная на оставшемся учаске, то используем её
-                if ($prevVal >= max(array_slice($A, $i-1, $countEl - 1))) {
-                    $startPoint = $currentVal;
-                }
-                else {
-
-                }
-            }
+            
+            $endPoint = $currentVal;
 
             if($startPoint - $currentVal > $startPoint - $minimum) {
                 $minimum = $currentVal;
@@ -77,61 +49,14 @@ class GeoHelper
             $diff = $heigth - $minimum;
 
             if ($diff > $result) $result = $diff;
-
-
-            /*if ($A[$i] <= $startPoint) { // идём на уменьшение ищем минимум
-                if($startPoint - $currentVal > $startPoint - $minimum) {
-                    $minimum = $currentVal;
-                    $minimumKey = $i;
-                }
-            }
-
-            else { // идём на увеличение
-                $endPoint  = $currentVal;
-                $endKey = $i; 
-
-            }
-
-
-
-            if ($endPoint > $startPoint) { // отслеживаем пересечение
-                $endPoint = $startPoint;
-                $endKey = $i;
-            }
-            elseif() { // отслеживаем минимумы
-
-            }*/
-
             
-
-            /*
-            if ($i + 1 < $countEl && $A[$i] > $A[$i+1]) {
-                $k = 1;
-                $startPoint = $A[$i];
-                $minimum = $startPoint;
-
-                while ($i + $k + 1 < $countEl && $A[$i + $k] < $startPoint ) {
-                    //Если точка максимальная на оставшемся учаске, то используем её
-                    if ($A[$i + $k] == max(array_slice($A, $i + $k, $countEl - 1))) break;
-                    if ($A[$i + $k] < $minimum) $minimum = $A[$i + $k]; //минимальный элемент на данном участке
-                    $k++;
-                }
-
-                $endPoint = $A[$i + $k];
-
-                $heigth = min($startPoint, $endPoint); // Получаем верхнюю точку для рассчета глубины
-
-                if ($k > 1) // Двух элементов недостаточно
-                {
-                    $diff = $heigth - $minimum;
-
-                    if ($diff > $result)
-                    {
-                        $result = $diff;
-                        $i += $k - 1; //смещаем итератор на величину просчитанного участка
-                    }
-                }
-            }*/
+            // если перевалили за границу текущей стратовой точки, то назначаем конечную
+            // или если точка максимальная на оставшемся учаске, то используем её
+            if ($currentVal >= $startPoint || $currentVal >= max(array_slice($A, $i-1, $countEl - 1))) {
+                $startPoint = $currentVal;
+                $endPoint = $currentVal;
+                $minimum = $currentVal;
+            }
         }
 
         return "Max depth: $result";
